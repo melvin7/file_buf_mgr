@@ -1,11 +1,11 @@
 //
-//  buf_mgr.c
+//  file_buf_mgr.c
 //
 //  Created by xichen on 2013-1-8.
 //  Copyright (c) 2013 ccteam. All rights reserved.
 //
 
-#include "buf_mgr.h"
+#include "file_buf_mgr.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
@@ -19,16 +19,23 @@
 // buf:         the user's buf pointer
 // size:        the remaining data's size that is needed
 // true_size:   the pointer that points to the current effective size that buf contains
-static char * buf_mgr_read_loop(BUF_MGR *buf_mgr, char *buf, long size, long *true_size);
+static char * buf_mgr_read_loop(
+                                FILE_BUF_MGR *buf_mgr, 
+                                char *buf, 
+                                const long size, 
+                                long *true_size
+                                );
 
-BUF_MGR *create_buf_mgr(const char *file_path)
+FILE_BUF_MGR *create_buf_mgr(
+                        const char *file_path
+                        )
 {
-	BUF_MGR *buf_mgr;
+	FILE_BUF_MGR *buf_mgr;
 	int filefd;
     char *buf;
     long read_size;
     
-    buf_mgr = (BUF_MGR *)malloc(sizeof(BUF_MGR));
+    buf_mgr = (FILE_BUF_MGR *)malloc(sizeof(FILE_BUF_MGR));
 	if(!buf_mgr)
 		return NULL;
 
@@ -65,7 +72,13 @@ error_open_file:
 	return NULL;
 }
 
-char *	buf_mgr_get_data(BUF_MGR *buf_mgr, int offset, int size, char *buf, long *true_size)
+char *	buf_mgr_get_data(
+                         FILE_BUF_MGR *buf_mgr, 
+                         const int offset, 
+                         const int size, 
+                         char *buf, 
+                         long *true_size
+                         )
 {
     long ret;
     char *buf_backup = buf;
@@ -121,7 +134,12 @@ char *	buf_mgr_get_data(BUF_MGR *buf_mgr, int offset, int size, char *buf, long 
 }
 
 
-static char * buf_mgr_read_loop(BUF_MGR *buf_mgr, char *buf, long size, long *true_size)
+static char * buf_mgr_read_loop(
+                                FILE_BUF_MGR *buf_mgr, 
+                                char *buf, 
+                                const long size, 
+                                long *true_size
+                                )
 {
     long fill_size = 0;
     long ret;
@@ -164,7 +182,9 @@ static char * buf_mgr_read_loop(BUF_MGR *buf_mgr, char *buf, long size, long *tr
 }
 
 
-void		close_buf_mgr(BUF_MGR *buf_mgr)
+void		close_buf_mgr(
+                          FILE_BUF_MGR *buf_mgr
+                          )
 {
     free(buf_mgr->buf);
     free(buf_mgr);

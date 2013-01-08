@@ -1,5 +1,5 @@
 //
-//  buf_mgr.h
+//  file_buf_mgr.h
 //
 //  Created by xichen on 2013-1-8.
 //  Copyright (c) 2013 ccteam. All rights reserved.
@@ -23,11 +23,13 @@ typedef struct
     
 	char	*buf;           // buf pointer
 	long	size;           // buf size
-}BUF_MGR;
+}FILE_BUF_MGR;
 
 // create a buffer manager
 // file_path: like "/test"
-BUF_MGR *create_buf_mgr(const char *file_path);
+FILE_BUF_MGR *create_buf_mgr(
+                        const char *file_path
+                        );
 
 // get data from the buffer manager
 // offset:  the offset of the file's data
@@ -36,10 +38,18 @@ BUF_MGR *create_buf_mgr(const char *file_path);
 // true_size: the true data size that returned
 
 // return value: the pointer that points to the needed data; if NULL, it means error occurs, then don't use the buf's data 
-char *	buf_mgr_get_data(BUF_MGR *buf_mgr, int offset, int size, char *buf, long *true_size);
+char *	buf_mgr_get_data(
+                         FILE_BUF_MGR *buf_mgr, 
+                         const int offset, 
+                         const int size, 
+                         char *buf, 
+                         long *true_size
+                         );
 
 // close the buffer manager
-void	close_buf_mgr(BUF_MGR *buf_mgr);
+void	close_buf_mgr(
+                      FILE_BUF_MGR *buf_mgr
+                      );
 
 
 #endif
